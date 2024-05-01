@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "rockpaperscissors"
+version = "0.1.0"
+description = "Used to run reinforcement learning to unravel optimal RPS-strategies"
+
+[tool.poetry]
+packages = [{include = "rockpaperscissors", from="src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
