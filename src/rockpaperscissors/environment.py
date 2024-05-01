@@ -19,6 +19,9 @@ class RockPaperScissorsEnvironment:
                            f'{self.player2}':0,
                            'tie':0}
         
+        self.historical_moves = {f'{self.player1}':[],
+                           f'{self.player2}':[]}
+        
         if game_type in [0,1,2]:
             self.game_type =  game_type
         else:
@@ -33,6 +36,9 @@ class RockPaperScissorsEnvironment:
         self.game_state = {f'{self.player1}':0,
                            f'{self.player2}':0,
                            'tie':0}
+        
+        self.historical_moves = {f'{self.player1}':[],
+                           f'{self.player2}':[]}
     def get_winner(self):
         if self.game_state[self.player1] > self.game_state[self.player2]:
             return self.player1
@@ -43,23 +49,15 @@ class RockPaperScissorsEnvironment:
         
     def game_done(self,):
         if self.game_type == 0:
-            if self.game_state[self.player1] >0:
-                return True
-            elif self.game_state[self.player2] >0:
-                return True
-            else:
-                return False
-
+            return self.game_state[self.player1] > 0 or self.game_state[self.player2] > 0
+        
         elif self.game_type == 1:
-            if sum(self.game_state.values()) ==3:
-                return True, 
-            else:
-                return False
-            return False
-        elif self.game_type == 2:
+            return sum(self.game_state.values()) ==3
             
-            return True
-    
+        elif self.game_type == 2:
+            return self.game_state[self.player1] == 3 or self.game_state[self.player2] == 3
+
+
     def check_actions(self, action):
         if action not in self.valid_actions:
             return False
@@ -70,16 +68,16 @@ class RockPaperScissorsEnvironment:
         # Take actions from two players and determine the outcome
         action1, action2 = actions
 
-        reward1, reward2 = self._calculate_rewards(action1, action2)
-        return (reward1, reward2)
+        reward = self._calculate_rewards(action1, action2)
+        return reward
 
     def _calculate_rewards(self, action1, action2):
         # Calculate rewards based on the actions chosen by both players
         if action1 == action2:
-            return (0, 0)  # Tie
+            return 0  # Tie
         elif (action1 == 'rock' and action2 == 'scissors') or \
              (action1 == 'paper' and action2 == 'rock') or \
              (action1 == 'scissors' and action2 == 'paper'):
-            return (1, -1)  # Player 1 wins, Player 2 loses
+            return 1 # Player 1 wins, Player 2 loses
         else:
-            return (-1, 1)  # Player 1 loses, Player 2 wins
+            return -1  # Player 1 loses, Player 2 wins

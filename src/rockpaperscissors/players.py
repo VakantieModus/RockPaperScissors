@@ -10,7 +10,6 @@ class Player:
     def choose_action(self, environment):
         raise NotImplementedError("Subclasses must implement choose_action method.")
 
-
 class RandomPlayer(Player):
     def __init__(self, name):
         super().__init__(name)
@@ -41,15 +40,23 @@ class PaperPlayer(Player):
     
     
 class Win_Stay_Lose_Switch(Player):
+    """
+    First move is random, after that strategy starts kicking in:
+        Previous match won -- Stay
+        Previous match lost -- Switch to another move randomly
+    """
     def __init__(self, name):
         super().__init__(name)
+        self.switch = {'stone':['paper', 'scissors']}
 
-    def choose_action(self, environment):
+    def choose_action(self, environment, reward):
+
+
         return 'paper'
     
 class Win_Switch_Lose_Change(Player):
     def __init__(self, name):
         super().__init__(name)
 
-    def choose_action(self, environment):
+    def choose_action(self, environment, reward ):
         return 'paper'

@@ -13,7 +13,10 @@ def simulate_game(player1, player2, num_games ,game_type, verbose):
             action1 = player1.choose_action(env)
             action2 = player2.choose_action(env)
 
-            _, reward = env.step((action1, action2))
+            env.historical_moves[env.player1].append(action1)
+            env.historical_moves[env.player2].append(action2)
+
+            reward = env.step((action1, action2))
 
             if reward == 1:
                 env.game_state[player1.name] += 1
@@ -24,25 +27,27 @@ def simulate_game(player1, player2, num_games ,game_type, verbose):
 
             done = env.game_done()
          
-
-
         result = env.get_winner()
         env.history[result] += 1
         if verbose:
             print(f'Game {i}: {result}')
             print(f'Scores: {[ (key, value) for key, value in env.game_state.items() ]}')
+            formatted_scores = '\n'.join([f"{key}: {value}" for key, value in env.historical_moves.items()])
+            print("Moves: \n" + formatted_scores)
+
             print('----------------------------------------------')
 
     print(f'Final score over {num_games} games:')
-    print(f'Scores: {[ (key, value) for key, value in env.history.items() ]}')
+    print(f'Scores: {[(key, value) for key, value in env.history.items() ]}')
+
 
 
 def main():
-    player1 = Champion("KAMPIOENEN-player")
+    player1 = Win_Stay_Lose_Switch("Win_Stay_Lose_Switch-player")
     player2 = StonePlayer("Stone-player")
-    num_games = 20
-    game_type = 1
-    verbose = False
+    num_games = 3
+    game_type = 2
+    verbose = True
     simulate_game(player1, player2, num_games, game_type, verbose)
 
 if __name__ == "__main__":
