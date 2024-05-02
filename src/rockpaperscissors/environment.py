@@ -74,10 +74,10 @@ class RockPaperScissorsEnvironment:
     def _calculate_rewards(self, action1, action2):
         # Calculate rewards based on the actions chosen by both players
         if action1 == action2:
-            return 0  # Tie
+            return (0,0)  # Tie
         elif (action1 == 'rock' and action2 == 'scissors') or \
              (action1 == 'paper' and action2 == 'rock') or \
              (action1 == 'scissors' and action2 == 'paper'):
-            return 1 # Player 1 wins, Player 2 loses
+            return (1,-1)# Player 1 wins, Player 2 loses
         else:
-            return -1  # Player 1 loses, Player 2 wins
+            return (-1,1)  # Player 1 loses, Player 2 wins
